@@ -9,3 +9,5 @@ contents = ""
 data = c.readFromFile(filename)
 
 c.display(data)
+
+#c.parseInfo(data)
