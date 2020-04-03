@@ -75,6 +75,7 @@ def menu():
     
 def displayFormat(line):
     """ format the information passed in, return it as a string """
+    
     return(f"{line['firstName'].ljust(9, ' ')} "
             f"{line['lastName'].ljust(15, ' ')} {line['id'].ljust(15, ' ')} "
             f"{line['dept'].ljust(10, ' ')} "
@@ -115,7 +116,6 @@ def displayGPA(data):
             pass
             
         user_amnt = input("Invalid entry, please enter a number: ")
-    
     
     print("".center(80, '*'))
     print("".center(80, '*'))
