@@ -5,7 +5,9 @@ def menu():
     temp += "Press 1 to print only students who have graduated\n"
     temp += "Press 2 to print only students who have a GPA >= a given amount\n"
     temp += "Press 3 to print only students of a given major\n"
-    temp += "Press 4 to exit: "
+    temp += "\nPress 4 to sort students based on graduation date\n"
+    temp += "Press 5 to sort students based on GPA\n"
+    temp += "Press 6 to exit: "
     
     user = input(temp)
     
@@ -87,3 +89,35 @@ def displayDept(data):
             "Please make sure input is correct.")
         
  
+def sortOnGradDate(data):
+    """ Sorts and prints students based on Graduation Date"""
+    
+    tempList = data[:]
+    
+    for line in tempList:
+        try:
+            (month, day, year) = line['dateOfGrad'].split(":")
+            line['month'] = int(month)
+            line['day'] = int(day)
+            line['year'] = int(year)
+        except ValueError:
+            line['year'] = 0
+    
+    tempList = sorted(tempList, key = lambda k: k['year'], reverse = True)
+    
+    print("".center(80, '*'))
+    print("".center(80, '*'))
+    
+    for line in tempList:
+        print(displayFormat(line))
+
+def sortOnGPA(data):
+    """ Sorts and prints students based on GPA """
+    
+    sortedList = sorted(data, key = lambda k: k['gpa'], reverse = True)
+    
+    print("".center(80, '*'))
+    print("".center(80, '*'))
+    
+    for line in sortedList:
+        print(displayFormat(line))

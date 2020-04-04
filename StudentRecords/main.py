@@ -1,4 +1,5 @@
-import control as c
+import body as b
+import display as d
 
 filename = "students.txt"
 data = {}
@@ -9,28 +10,33 @@ try:
 except NameError:
     print(f"{filename} was not found, please make sure the name is correct")
     
-data = c.readFromFile(filename)
+data = b.readFromFile(filename)
 
-user = c.menu()
+user = d.menu()
 
-while user != 4:
+while user != 6:
 
     if user == 0:
-        c.displayAll(data)
+        d.displayAll(data)
     elif user == 1:
-        c.displayGrads(data)
+        d.displayGrads(data)
     elif user == 2:
-        c.displayGPA(data)
+        d.displayGPA(data)
     elif user == 3:
-        c.displayDept(data)
+        d.displayDept(data)
     elif user == 4:
-        print("\nExiting program now... \n")
+        d.sortOnGradDate(data)
+    elif user == 5:
+        d.sortOnGPA(data)
+    else:
+        print("\nPlease make sure you are inputting an option from the menu..")
+        
     
     print("".center(80, '*'))
     print("".center(80, '*'))
-    user = c.menu()
+    user = d.menu()
 
-
+print("\nExiting program now... \n")
 #c.display(data)
 
 #c.parseInfo(data)
