@@ -20,4 +20,8 @@ class CuboidalTank:
     
     def setLiquidHeight(self, amnt_oil):
         self.liquid_height += amnt_oil
+        
+    def tankMenu(self):
+        menu = "TO DO"
+        return(menu)
     
