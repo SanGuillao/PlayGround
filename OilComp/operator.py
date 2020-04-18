@@ -1,3 +1,7 @@
+from cuboidalTank import CuboidalTank
+from hexagonalPrismTank import HexagonalPrismTank
+from cylindricalTank import CylindricalTank
+
 class OperatorDetails:
     def __init__(self, id, first_name, last_name, employDate, role):
         self.id = id
@@ -19,7 +23,8 @@ class OperatorDetails:
         return self.day
     
     def printDetails(self):
-        return ("TO DO")
+        return (f"{self.id} {self.first_name} {self.last_name}"
+            f" {self.month}:{self.day}:{self.year} {self.role}")
 
 class Operator:
     def __init__(self):
@@ -72,4 +77,39 @@ class Operator:
         for line in self.list_of_operators:
             if line.getDay() == user_input:
                 print(line.printDetails())
+                
+    def operatorMenu(self):
+        cuboidal = CuboidalTank()
+        hexa = HexagonalPrismTank()
+        cylin = CylindricalTank()
+        user_input = 0
         
+        menu = "\tWelcome Operator!\n\n"
+        menu += "\tEnter 1 to select Cuboidal Tank\n"
+        menu += "\tEnter 2 to select Cylindrical Tank\n"
+        menu += "\tEnter 3 to select Regular Right Hexagonal Prism Tank\n"
+        menu += "\tEnter 4 to exit: "
+        
+        try:
+            user_input = int(input(menu))
+        except ValueError:
+            while True:
+                try:
+                    user_input = int(input("Please enter an option from the"
+                        " menu: "))
+                    break
+                except ValueError:
+                    pass
+        
+        while True:
+            if user_input == 4:
+                return
+            elif user_input == 1:
+                cuboidal.tankMenu()
+            elif user_input == 2:
+                cylin.tankMenu()
+            elif user_input == 3:
+                hexa.tankMenu()
+                
+            user_input = int(input(menu))
+                

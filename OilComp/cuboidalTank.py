@@ -15,13 +15,65 @@ class CuboidalTank:
     def getAmntToFill(self):
         return self.max_volume - self.getCurrentVolume()
         
-    def getAmntPartial(self, user_input):
-        return user_input - self.liquid_height
+    def getAmntPartial(self):
+        newVolume = 0.0
+        self.getCurrentVolume()
+        
+        while True:
+            try:
+                newVolume = int(input("Please enter amount to fill: "))
+                break
+            except ValueError:
+                print("Please enter a numerical value")
+        
+        newVolume = newVolume * self.length * self.width
+        
+        return newVolume - self.liquid_height
     
     def setLiquidHeight(self, amnt_oil):
         self.liquid_height += amnt_oil
         
     def tankMenu(self):
-        menu = "TO DO"
-        return(menu)
-    
+        menu = "\t\tCuboidalTank\n\n"
+        menu += "\t\tEnter 1 to get max possible volume\n"
+        menu += "\t\tEnter 2 to get current volume\n"
+        menu += "\t\tEnter 3 to supply oil\n"
+        menu += "\t\tEnter 4 to get amnt to completly fill tank\n"
+        menu += "\t\tEnter 5 to get amnt to partially fill tank\n"
+        menu += "\t\tEnter 6 to exit: "
+        
+        try:
+            user_input = int(input(menu))
+        except ValueError:
+            while True:
+                try:
+                    user_input = int(input("Please enter an option from the"
+                        " menu: "))
+                    break
+                except ValueError:
+                    pass
+        
+        
+        while True:
+            if user_input == 6:
+                return
+                
+            elif user_input == 1:
+                print(self.getMaxVolume())
+                
+            elif user_input == 2:
+                print(self.getCurrentVolume())
+                
+            elif user_input == 3:
+                amnt = int(input("How much oil: "))
+                self.setLiquidHeight(amnt)
+                print(f"{amnt} ltrs has been added to the tank")
+                print(f"The tank has {self.getCurrentVolume()} units")
+                
+            elif user_input == 4:
+                print(self.getAmntToFill())
+                
+            elif user_input == 5:
+                print(self.getAmntPartial())
+            
+            user_input = int(input(menu))

@@ -16,11 +16,30 @@ class CylindricalTank:
         return self.max_volume - self.getCurrentVolume()
         
     def getAmntPartial(self, user_input):
-        return user_input - self.liquid_height
+        newVolume = 0.0
+        self.getCurrentVolume()
+        
+        while True:
+            try:
+                newVolume = int(input("Please enter amount to fill: "))
+                break
+            except ValueError:
+                print("Please enter a numerical value")
+        
+        newVolume = newVolume * math.pi * self.radius * self.radius
+        
+        return newVolume - self.liquid_height
     
     def setLiquidHeight(self, amnt_oil):
         self.liquid_height += amnt_oil
         
     def tankMenu(self):
-        menu = "TO DO"
+        menu = "\t\tCuboidalTank\n\n"
+        menu += "\t\tEnter 1 to get max possible volume\n"
+        menu += "\t\tEnter 2 to get current volume\n"
+        menu += "\t\tEnter 3 to supply oil\n"
+        menu += "\t\tEnter 4 to get amnt to completly fill tank\n"
+        menu += "\t\tEnter 5 to get amnt to partially fill tank\n"
+        menu += "\t\tEnter 6 to exit: "
+        
         return(menu)
