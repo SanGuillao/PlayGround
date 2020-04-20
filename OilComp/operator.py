@@ -1,6 +1,7 @@
 from cuboidalTank import CuboidalTank
 from hexagonalPrismTank import HexagonalPrismTank
 from cylindricalTank import CylindricalTank
+from utilities import getUserInputFromMenu
 
 class OperatorDetails:
     def __init__(self, id, first_name, last_name, employDate, role):
@@ -49,7 +50,6 @@ class Operator:
             print(line.printDetails())
             
     def printByRole(self):
-        
         user_input = input("Please enter role: ")
         
         for line in self.list_of_operators:
@@ -64,7 +64,6 @@ class Operator:
                 print(line.printDetails())
                 
     def printByMonth(self):
-        
         user_input = input("Please enter month: ")
         
         for line in self.list_of_operators:
@@ -90,16 +89,7 @@ class Operator:
         menu += "\tEnter 3 to select Regular Right Hexagonal Prism Tank\n"
         menu += "\tEnter 4 to exit: "
         
-        try:
-            user_input = int(input(menu))
-        except ValueError:
-            while True:
-                try:
-                    user_input = int(input("Please enter an option from the"
-                        " menu: "))
-                    break
-                except ValueError:
-                    pass
+        user_input = getUserInputFromMenu(menu)
         
         while True:
             if user_input == 4:
@@ -110,6 +100,8 @@ class Operator:
                 cylin.tankMenu()
             elif user_input == 3:
                 hexa.tankMenu()
+            else:
+                print("Please enter an option from the menu..")
                 
-            user_input = int(input(menu))
+            user_input = getUserInputFromMenu(menu)
                 

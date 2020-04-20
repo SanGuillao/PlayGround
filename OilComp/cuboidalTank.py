@@ -1,3 +1,5 @@
+from utilities import getUserInputFromMenu
+
 class CuboidalTank:
     def __init__(self, length = 10, width = 6, height = 400, lqd_height = 0):
         self.length = length
@@ -34,7 +36,7 @@ class CuboidalTank:
         self.liquid_height += amnt_oil
         
     def tankMenu(self):
-        menu = "\t\tCuboidalTank\n\n"
+        menu = "\t\tCuboidal Tank\n\n"
         menu += "\t\tEnter 1 to get max possible volume\n"
         menu += "\t\tEnter 2 to get current volume\n"
         menu += "\t\tEnter 3 to supply oil\n"
@@ -42,17 +44,7 @@ class CuboidalTank:
         menu += "\t\tEnter 5 to get amnt to partially fill tank\n"
         menu += "\t\tEnter 6 to exit: "
         
-        try:
-            user_input = int(input(menu))
-        except ValueError:
-            while True:
-                try:
-                    user_input = int(input("Please enter an option from the"
-                        " menu: "))
-                    break
-                except ValueError:
-                    pass
-        
+        user_input = getUserInputFromMenu(menu)
         
         while True:
             if user_input == 6:
@@ -65,10 +57,15 @@ class CuboidalTank:
                 print(self.getCurrentVolume())
                 
             elif user_input == 3:
-                amnt = int(input("How much oil: "))
-                self.setLiquidHeight(amnt)
-                print(f"{amnt} ltrs has been added to the tank")
-                print(f"The tank has {self.getCurrentVolume()} units")
+                try:
+                    amnt = int(input("How much oil: "))
+                    self.setLiquidHeight(amnt)
+                    print(f"{amnt} ltrs has been added to the tank")
+                    print(f"The tank has {self.getCurrentVolume()} units of" 
+                        " oil")
+                except ValueError:
+                    print("Error! A numerical value was expected, but not"
+                        " received!")
                 
             elif user_input == 4:
                 print(self.getAmntToFill())
@@ -76,4 +73,7 @@ class CuboidalTank:
             elif user_input == 5:
                 print(self.getAmntPartial())
             
-            user_input = int(input(menu))
+            else:
+                print("Please enter an option from the menu..")
+            
+            user_input = getUserInputFromMenu(menu)
