@@ -31,6 +31,11 @@ class Ship:
         self.moving_up = False
         self.moving_down = False
         
+    def center_ship(self):
+        """ Center the ship after each round start """
+        self.rect.midleft = self.screen_rect.midleft
+        self.y = float(self.rect.y)
+        
     def blitme(self):
         """ Draw the ship at the current position """
         # pass both the image of the ship and the rect (hit-box)

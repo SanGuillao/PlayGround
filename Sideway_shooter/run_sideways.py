@@ -1,10 +1,13 @@
 import sys
 import pygame
 
+from time import sleep
+
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+from game_stats import GameStats
 
 class SidewayShooter:
     """ Manages the overall game """
@@ -26,6 +29,9 @@ class SidewayShooter:
         # initiliazed correctly
         self.ship = Ship(self)
         
+        # create the instance of game stats & pass in the game instance
+        self.stats = GameStats(self)
+        
         # init bullets
         # store them into a group
         self.bullets = pygame.sprite.Group()
@@ -41,12 +47,17 @@ class SidewayShooter:
         while True:
             # check for events
             self._get_events()
-            # update the ship
-            self.ship.update()
-            # update bullets
-            self._update_bullets()
-            # update the alien fleet
-            self._update_aliens()
+            
+            # check the game state flag
+            # we wanna keep checking for event outside of this, cause the user should be able
+            # to quit whenever
+            if self.stats.game_active:
+                # update the ship
+                self.ship.update()
+                # update bullets
+                self._update_bullets()
+                # update the alien fleet
+                self._update_aliens()
             # update the screen
             self._update_screen()
             
@@ -86,6 +97,17 @@ class SidewayShooter:
             if alien.check_edges():
                 self._change_fleet_direction()
                 break
+              
+    def _check_aliens_bottom(self):
+        """ Check to see if any alien in the fleet has reached the bottom of the screen """
+        # get the current screen dimensions 
+        screen_rect = self.screen.get_rect()
+        # check each alien to see if they've reached the bottom of the screen
+        for alien in self.aliens.sprites():
+            if alien.rect.left <= 0:
+                # call ship hit since the same consequences will happen regardless
+                self._ship_hit()
+                break
     
     def _change_fleet_direction(self):
         """ Change the fleet direction and drop the aliens """
@@ -109,6 +131,28 @@ class SidewayShooter:
             # Destroy any remaining bullets
             self.bullets.empty()
             self._create_fleet()
+            
+    def _ship_hit(self):
+        """ Respond to ship being hit """
+        # first check if user has any more ships
+        if self.stats.ships_left > 0:
+            # decrement ships left
+            self.stats.ships_left -= 1
+            
+            # reset the stage
+            # clean up any aliens and bullets left on screen
+            self.aliens.empty()
+            self.bullets.empty()
+            
+            # create a new fleet and recenter the ship
+            self._create_fleet()
+            self.ship.center_ship()
+            
+            # Pause the game so the user can see collision
+            sleep(0.5)
+        # if no more ships left, set game state to false
+        else:
+            self.stats.game_active = False
     
     def _fire_bullets(self):
         """ Generate bullets fired due to keydown """
@@ -191,6 +235,14 @@ class SidewayShooter:
         """ Update the positions of the alien fleet """
         self._check_fleet_edges()
         self.aliens.update()
+        
+        # check to see if any aliens have collided with the ship
+        # spritecollideany takes the single sprite and checks it agaisnt the group 
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            self._ship_hit()
+            
+        # check to see if any alien has reach the left of the screen
+        self._check_aliens_bottom()
         
     def _update_screen(self):
         """ Update the screen to the most recent screen """
