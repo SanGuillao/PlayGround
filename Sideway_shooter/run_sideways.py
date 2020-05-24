@@ -8,6 +8,7 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from game_stats import GameStats
+from button import Button
 
 class SidewayShooter:
     """ Manages the overall game """
@@ -41,6 +42,9 @@ class SidewayShooter:
         
         # create the alien fleet
         self._create_fleet()
+        
+        # create the play button
+        self.play_button = Button(self, "Play")
     
     def run_game(self):
         """ Run the actual game """
@@ -66,16 +70,23 @@ class SidewayShooter:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN:
                 self._keydown_events(event)
-            if event.type == pygame.KEYUP:
+            elif event.type == pygame.KEYUP:
                 self._keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
                 
     def _keydown_events(self, event):
         """ respond to keydown events """
         # pretty explanatory stuff here..
-        if event.key == pygame.K_ESCAPE:
+        if event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
             sys.exit()
+        if event.key == pygame.K_p and not self.stats.game_active:
+            # start the game, if the play button is up
+            # and if the game is not active
+            self._start_game()
         if event.key == pygame.K_UP:
             self.ship.moving_up = True
         if event.key == pygame.K_DOWN:
@@ -108,6 +119,16 @@ class SidewayShooter:
                 # call ship hit since the same consequences will happen regardless
                 self._ship_hit()
                 break
+                
+    def _check_play_button(self, mouse_pos):
+        """ Start a new game when player clicks Play """
+        # collidepoint will compare the mouse click pos to the rect of play_button
+        # if it finds tht it collides then it will return true
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        # only the game will only restart if the Play button is clicked and the game is not
+        # currently active
+        if button_clicked and not self.stats.game_active:
+            self._start_game()
     
     def _change_fleet_direction(self):
         """ Change the fleet direction and drop the aliens """
@@ -153,6 +174,9 @@ class SidewayShooter:
         # if no more ships left, set game state to false
         else:
             self.stats.game_active = False
+            
+            # show the mouse button
+            pygame.mouse.set_visible(True)
     
     def _fire_bullets(self):
         """ Generate bullets fired due to keydown """
@@ -261,8 +285,33 @@ class SidewayShooter:
         # will draw each element in the group        
         self.aliens.draw(self.screen)
         
+        # draw the play button if the game is inactive
+        # call it last to make sure it gets drawn over all other elements
+        if not self.stats.game_active:
+            self.play_button.draw_button()
+        
         # Make the most recently drawn screen visible            
         pygame.display.flip()
+    
+    def _start_game(self):
+        """ start the game from the Play button stage """
+        # reset the game stats everytime a new game is started (alien speed, ship speed and
+        # bullet speed )
+        #self.settings.initialize_dynamic_settings()
+        # reset the game stats
+        self.stats.reset_stats()
+        self.stats.game_active = True
+            
+        # clean up any aliens and bullets
+        self.aliens.empty()
+        self.bullets.empty()
+            
+        # create a new fleet and recenter the ship
+        self._create_fleet()
+        self.ship.center_ship()
+            
+        # hide the mouse cursor 
+        pygame.mouse.set_visible(False)
     
 if __name__ == '__main__':
     newGame = SidewayShooter()
