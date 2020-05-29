@@ -18,12 +18,6 @@ window.configure(background = 'black')
 
 # ----------------------------------------------------------------------------
 
-"""readyList = []
-blockedList = []
-endList = []
-
-currentProcess = generateProcess(-1)"""
-
 buttonFunc = ButtonFunc()
 
 # ----------------------------------------------------------------------------
@@ -67,19 +61,22 @@ ready_box.place(x = 5, y = 125)
 blocked_box.place(x = 5, y = 350)
 terminated_box.place(x = 5, y = 550)
 
+# make sure the color stays the same
+running_box.configure(disabledforeground = 'white', 
+    disabledbackground = 'black')
+
 # running_box.insert(0, "testing...") # testing input method
 
 # ----------------------------------------------------------------------------
 
 # make buttons
-"""addProcess_btn = tkinter.Button(window, text = 'Add Process', 
-    command = lambda : [onAddProcess
-    (ready_box, readyList, running_box, currentProcess)])"""
     
 addProcess_btn = tkinter.Button(window, text = 'Add Process', 
     command = lambda : buttonFunc.onAddProcess(ready_box, running_box))
     
-block_btn = tkinter.Button(window, text = 'Block')
+block_btn = tkinter.Button(window, text = 'Block', 
+    command = lambda : buttonFunc.onBlock(ready_box, running_box, blocked_box))
+    
 timeSlice_btn = tkinter.Button(window, text = 'Time Slice')
 term_btn = tkinter.Button(window, text = 'Terminate')
 send_btn = tkinter.Button(window, text = 'Send To Ready')
