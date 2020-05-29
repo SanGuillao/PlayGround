@@ -2,7 +2,7 @@
 import tkinter
 
 from tkinter import scrolledtext
-from button_func import *
+from button_func import ButtonFunc
 
 # make a window
 window = tkinter.Tk()
@@ -18,11 +18,13 @@ window.configure(background = 'black')
 
 # ----------------------------------------------------------------------------
 
-readyList = []
+"""readyList = []
 blockedList = []
 endList = []
 
-currentProcess = generateProcess(-1)
+currentProcess = generateProcess(-1)"""
+
+buttonFunc = ButtonFunc()
 
 # ----------------------------------------------------------------------------
 
@@ -70,9 +72,12 @@ terminated_box.place(x = 5, y = 550)
 # ----------------------------------------------------------------------------
 
 # make buttons
-addProcess_btn = tkinter.Button(window, text = 'Add Process', 
+"""addProcess_btn = tkinter.Button(window, text = 'Add Process', 
     command = lambda : [onAddProcess
-    (ready_box, readyList, running_box, currentProcess)])
+    (ready_box, readyList, running_box, currentProcess)])"""
+    
+addProcess_btn = tkinter.Button(window, text = 'Add Process', 
+    command = lambda : buttonFunc.onAddProcess(ready_box, running_box))
     
 block_btn = tkinter.Button(window, text = 'Block')
 timeSlice_btn = tkinter.Button(window, text = 'Time Slice')
