@@ -4,6 +4,10 @@ Don't judge too much (looking at u bluehat... lol)
 <h1>A List of Projects include: </h1>
 <dl> 
   <dt>
+    Tkinter - Processing Scheduling
+      <dd>- a basic scheduling program made to represent the scheduling method for processes. Practicing tkinter by re-doing an old C++ project of mine in Python.
+  </dt>
+  <dt>
     Pygame - Sideway Shooter
       <dd>- a basic program made to test pygame, makes a sideway shooter (style like alien invader but sideways).
   </dt>
