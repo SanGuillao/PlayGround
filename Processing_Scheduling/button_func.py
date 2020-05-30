@@ -25,19 +25,21 @@ class ButtonFunc:
         process = {
             'id' : '',
             'name' : 'Process',
-            'priority' : ''
+            'priority' : '',
+            'size' : ''
         }
         
         process['id'] = id
         process['priority'] = int(uniform(1, 10))
+        process['size'] = int(uniform(5, 15))
         
         return process
     
     def _formattedOutput(self, process):
         """ return the neatly formatted info inside of Process """
         if process:
-            return (f"{process['id']} {process['name']} "
-                f"{process['priority']} \n")
+            return (f"Process ID: {process['id']} "
+                f"| Priority: {process['priority']} \n")
         
     def _updateRunning(self, ready_box, running_box):
         """ 
